@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>361</width>
+    <height>512</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QLabel" name="labelbooks">
+     <property name="styleSheet">
+      <string notr="true">font: 22pt &quot;Segoe UI&quot;;
+color: rgb(255, 85, 255);</string>
+     </property>
+     <property name="text">
+      <string>Выберите Книгу</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QListWidget" name="listWidgetBooks">
+     <item>
+      <property name="text">
+       <string>Гарри Потер и Узник Азкабана Доан Роулинг</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Благословение Небожителей. Том3. Монсян Тунсю</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Унесенные Ветром. Маргарит Митчел</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelPay">
+     <property name="styleSheet">
+      <string notr="true">font: 22pt &quot;Segoe UI&quot;;
+color: rgb(255, 85, 255);</string>
+     </property>
+     <property name="text">
+      <string>Выберите способ оплаты</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QRadioButton" name="radioMoney">
+       <property name="text">
+        <string>Наличными</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioCard">
+       <property name="text">
+        <string>По карте</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioQR">
+       <property name="text">
+        <string>По QR</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButtonPay">
+     <property name="text">
+      <string>Оплатить</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
