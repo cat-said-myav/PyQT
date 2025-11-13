@@ -1,5 +1,5 @@
 from PySide6 import QtWidgets
-from window_ui import Ui_Form
+from ui.window_ui  import Ui_Form
 
 class MainWindow(QtWidgets.QWidget):
     def __init__(self, parent=None):
