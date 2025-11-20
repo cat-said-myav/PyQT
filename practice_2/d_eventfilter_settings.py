@@ -89,20 +89,18 @@ class Window(QtWidgets.QWidget):
 
     def loadSettings(self):
 
-        saved_mode = self.settings.value("display_mode")
-        if saved_mode and saved_mode in self.lcd_modes:
-            self.cb.setCurrentText(saved_mode)
-            self.lcd.setMode(self.lcd_modes[saved_mode])
+        saved_mode = self.settings.value("display_mode", "hex")
+        self.cb.setCurrentText(saved_mode)
+        self.lcd.setMode(self.lcd_modes[saved_mode])
 
         saved_value = self.settings.value("lcd_value")
-        if saved_value:
-            try:
-                value = int(saved_value)
-                self.dial.setValue(value)
-                self.slider.setValue(value)
-                self.lcd.display(value)
-            except ValueError:
-                pass
+        try:
+            value = int(saved_value)
+            self.dial.setValue(value)
+            self.slider.setValue(value)
+            self.lcd.display(value)
+        except ValueError:
+            pass
 
     def closeEvent(self, event):
         self.saveSettings()
