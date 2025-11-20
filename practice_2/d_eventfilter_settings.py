@@ -18,7 +18,7 @@
    в него соответствующие значения
 """
 
-from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6 import QtWidgets, QtCore
 
 
 class Window(QtWidgets.QWidget):
@@ -26,7 +26,7 @@ class Window(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.settings = QtCore.QSettings("MyCompany", "DialApp")
+        l = QtWidgets.QVBoxLayout()
 
         self.lcd_modes = {
             "hex": QtWidgets.QLCDNumber.Mode.Hex,
@@ -35,69 +35,32 @@ class Window(QtWidgets.QWidget):
             "bin": QtWidgets.QLCDNumber.Mode.Bin,
         }
 
-        self.initUI()
-        self.loadSettings()
-        self.connectWidgets()
-
-    def initUI(self):
-        """Инициализация пользовательского интерфейса"""
-        layout = QtWidgets.QVBoxLayout()
-
-
         self.dial = QtWidgets.QDial()
-        self.dial.setRange(0, 100)
+        self.dial.valueChanged.connect(self.onValueChanged)
         self.dial.installEventFilter(self)
-
         self.lcd = QtWidgets.QLCDNumber()
-        self.lcd.setDigitCount(3)
+        self.lcd.display(14)
         self.lcd.setMinimumHeight(60)
-
-        self.slider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal)
-        self.slider.setRange(0, 100)
-
+        self.slider = QtWidgets.QSlider()
+        self.slider.setOrientation(QtCore.Qt.Orientation.Horizontal)
+        self.slider.valueChanged.connect(self.onValueChanged)
         self.cb = QtWidgets.QComboBox()
         self.cb.addItems(list(self.lcd_modes.keys()))
+        self.cb.currentTextChanged.connect(lambda mode: self.lcd.setMode(self.lcd_modes[mode]))
 
-        # Добавление виджетов в layout
-        layout.addWidget(self.dial)
-        layout.addWidget(self.lcd)
-        layout.addWidget(self.slider)
-        layout.addWidget(self.cb)
+        l.addWidget(self.dial)
+        l.addWidget(self.lcd)
+        l.addWidget(self.slider)
+        l.addWidget(self.cb)
 
-        self.setLayout(layout)
-        self.setWindowTitle("Dial-Slider-LCD Demo")
+        self.setLayout(l)
 
-    def connectWidgets(self):
-
-        self.dial.valueChanged.connect(self.onDialValueChanged)
-        self.slider.valueChanged.connect(self.onSliderValueChanged)
-        self.cb.currentTextChanged.connect(self.onModeChanged)
-
-    def onDialValueChanged(self, value):
-        print(f"Dial value changed: {value}")
-
-
-        self.slider.blockSignals(True)
-        self.slider.setValue(value)
-        self.slider.blockSignals(False)
-
-        self.updateLCD(value)
-
-    def onSliderValueChanged(self, value):
-        self.dial.blockSignals(True)
+        self.settings = QtCore.QSettings("MyCompany", "DialApp")
+        self.loadSettings()
+    def onValueChanged(self, value):
         self.dial.setValue(value)
-        self.dial.blockSignals(False)
-
+        self.slider.setValue(value)
         self.updateLCD(value)
-
-    def onModeChanged(self, mode):
-        self.lcd.setMode(self.lcd_modes[mode])
-
-        current_value = self.dial.value()
-        self.updateLCD(current_value)
-
-        # Сохранение настроек
-        self.saveSettings()
 
     def updateLCD(self, value):
         self.lcd.display(value)
@@ -121,20 +84,25 @@ class Window(QtWidgets.QWidget):
         return super().eventFilter(watched, event)
 
     def saveSettings(self):
-        self.settings.setValue("dial_value", self.dial.value())
         self.settings.setValue("display_mode", self.cb.currentText())
-        self.settings.sync()
+        self.settings.setValue("lcd_value", self.dial.value())
 
     def loadSettings(self):
-        dial_value = self.settings.value("dial_value", 0, type=int)
-        self.dial.setValue(dial_value)
 
-        display_mode = self.settings.value("display_mode", "dec")
-        if display_mode in self.lcd_modes:
-            self.cb.setCurrentText(display_mode)
-            self.lcd.setMode(self.lcd_modes[display_mode])
+        saved_mode = self.settings.value("display_mode")
+        if saved_mode and saved_mode in self.lcd_modes:
+            self.cb.setCurrentText(saved_mode)
+            self.lcd.setMode(self.lcd_modes[saved_mode])
 
-        self.updateLCD(dial_value)
+        saved_value = self.settings.value("lcd_value")
+        if saved_value:
+            try:
+                value = int(saved_value)
+                self.dial.setValue(value)
+                self.slider.setValue(value)
+                self.lcd.display(value)
+            except ValueError:
+                pass
 
     def closeEvent(self, event):
         self.saveSettings()
