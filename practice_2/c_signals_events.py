@@ -43,11 +43,11 @@ class Window(QtWidgets.QWidget):
     def event(self, event: QtCore.QEvent):
         if event.type() == QtCore.QEvent.Resize:
             size = event.size().toTuple()
-            print(datetime.datetime.now().strftime('%H:%M:%S'), f'----> size : {size}')
+            print(datetime.datetime.now().strftime('%H:%M:%S'), f'new_size ----> : {size}')
         if event.type() == QtCore.QEvent.Move:
             old_pos = event.oldPos().toTuple()
             new_pos = event.pos().toTuple()
-            print(datetime.datetime.now().strftime('%H:%M:%S'), f' ----> old_pos {old_pos} new_pos {new_pos}')
+            print(datetime.datetime.now().strftime('%H:%M:%S'), f'old_pos {old_pos} ----> new_pos {new_pos}')
 
         return super().event(event)
 
