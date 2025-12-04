@@ -24,13 +24,11 @@ class SystemInfo(QtCore.QThread):
             try:
                 monitor_dict = {}
                 cpu_value = psutil.cpu_percent()
-                ram_value = psutil.virtual_memory()
-                ram_value_usage = round(ram_value.used / ram_value.total * 100, 2)
-                ram_value_free = round(ram_value.free / ram_value.total * 100, 2)
+                ram_value_usage = psutil.virtual_memory().percent
+                ram_value_free = round(100 - ram_value_usage, 2)
 
-                disk_value = psutil.disk_usage("/")
-                disk_value_usage = round(disk_value.used / disk_value.total * 100, 2)
-                disk_value_free = round(disk_value.free/ disk_value.total * 100, 2)
+                disk_value_usage = psutil.disk_usage("/").percent
+                disk_value_free = round(100 - disk_value_usage, 2)
                 monitor_dict['cpu'] = cpu_value
                 monitor_dict['ram_usage'] = ram_value_usage
                 monitor_dict['ram_free'] = ram_value_free
