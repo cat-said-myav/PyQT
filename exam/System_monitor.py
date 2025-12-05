@@ -14,6 +14,7 @@ class SystemMonitor(QtWidgets.QWidget):
         self.graph_dict = {}
 
     def __initUi(self):
+        self.setWindowTitle("sysinfo")
         self.table = QtWidgets.QTableWidget(5, 1)
         self.table.horizontalHeader().hide()
         self.table.setVerticalHeaderLabels(["CPU", "RAM_usage", "RAM_free", "DISK_usage", "DISK_free"])
