@@ -65,7 +65,7 @@ class SystemMonitor(QtWidgets.QWidget):
 
         for i in self.graph_dict.keys():
             self.graph_dict[i].setValue(0)
-
+            self.graph_dict[i].setText(f"{i}: 0%")
 
     def addValue(self, data=dict):
         self.table.setItem(0,0,QtWidgets.QTableWidgetItem(f"{data['cpu']}%"))
