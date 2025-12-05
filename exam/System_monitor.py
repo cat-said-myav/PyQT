@@ -77,7 +77,7 @@ class SystemMonitor(QtWidgets.QWidget):
         for i in data.keys():
             if i in self.graph_dict:
                 self.graph_dict[i].setValue(data[i])
-
+                self.graph_dict[i].setText(f"{i}: {data[i]}%")
 
     def createGraph(self):
         self.setMinimumSize(1000, 300)
@@ -85,7 +85,6 @@ class SystemMonitor(QtWidgets.QWidget):
         for i in graph:
             if not i in self.graph_dict.keys():
                 widget = SystemWidget(i)
-                widget.setText(i)
                 self.graph_dict[i] = widget
                 self.graphlayout.addWidget(widget)
 
